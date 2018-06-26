@@ -1,0 +1,429 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>gaode_heatmap</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <script src="http://webapi.amap.com/maps?v=1.4.3&key=70cdeff9c64f91c9d2f9859c09614320"></script>
+    <!-- <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script> -->
+    <!-- <script type="text/javascript" src="http://a.amap.com/jsapi_demos/static/resource/heatmapData.js"></script> -->
+</head>
+<body>
+
+<div id="container"></div>
+<div class="button-group">
+    <input type="button" class="button" value="显示热力图" onclick="heatmap.show()"/>
+    <input type="button" class="button" value="关闭热力图" onclick="heatmap.hide()"/>
+    <input type="button" class="button" value="全国热力图" onclick="window.location.href='./map.html';"/>
+
+    <!-- 23个省 -->
+    <div>
+        <input type="button" class="button" value="湖南" onclick="LocationHref('hunan',6,(112+58/60+42/3600),(28+11/60+49/3600));"/>
+        <input type="button" class="button" value="台湾" onclick="LocationHref('taiwang',6,(121+31/60),(25+3/60));"/>
+        <input type="button" class="button" value="海南" onclick="LocationHref('hainan',6,(110+20/60),(20+2/60));"/>
+        <input type="button" class="button" value="云南" onclick="LocationHref('yunnan',6,(102+41/60),25);"/>
+        <input type="button" class="button" value="广东" onclick="LocationHref('guangdong',6,(113+15/60),(23+8/60));"/>
+        <input type="button" class="button" value="福建" onclick="LocationHref('fujiang',6,(119+18/60),(26+5/60));"/></br>
+        <input type="button" class="button" value="贵州" onclick="LocationHref('guizhou',6,(106 +42/60),(26+35/60));"/>
+        <input type="button" class="button" value="江西" onclick="LocationHref('jiangxi',6,(115+52/60),(28+41/60));"/>
+        <input type="button" class="button" value="浙江" onclick="LocationHref('zhejiang',6,(120+9/60),(30+14/60));"/>
+        <input type="button" class="button" value="四川" onclick="LocationHref('sichuan',6,(104+5/60),(30+39/60));"/>
+        <input type="button" class="button" value="湖北" onclick="LocationHref('hubei',6,(114+21/60),(30+37/60));"/>
+        <input type="button" class="button" value="安徽" onclick="LocationHref('anhui',6,(117+18/60),(31+51/60));"/></br>
+        <input type="button" class="button" value="江苏" onclick="LocationHref('jiangsu',6,(118+50/60),(32+2/60));"/>
+        <input type="button" class="button" value="青海" onclick="LocationHref('qinghai',6,(101+45/60),(36+38/60));"/>
+        <input type="button" class="button" value="甘肃" onclick="LocationHref('gansu',6,(103+49/60),(36+3/60));"/>
+        <input type="button" class="button" value="陕西" onclick="LocationHref('Qin',6,(108+54/60),(34+16/60));"/>
+        <input type="button" class="button" value="山西" onclick="LocationHref('Jin',6,(112+34/60),(37+52/60));"/>
+        <input type="button" class="button" value="河南" onclick="LocationHref('henan',6,(113+42/60),(34+48/60));"/></br>
+        <input type="button" class="button" value="河北" onclick="LocationHref('hebei',6,(114+28/60),(38+2/60));"/>
+        <input type="button" class="button" value="山东" onclick="LocationHref('shandong',6,(117+18/60),(36+38/60));"/>
+        <input type="button" class="button" value="辽宁" onclick="LocationHref('liaoning',6,(123+24/60),(41+50/60));"/>
+        <input type="button" class="button" value="吉林" onclick="LocationHref('jilin',6,(125+19/60),(43+52/60));"/>
+        <input type="button" class="button" value="黑龙江" onclick="LocationHref('heilongjiang',6,(126+41/60),(45+45/60));"/>
+    </div>
+
+    <!-- 4个直辖市 -->
+    <div>
+        <input type="button" class="button" value="北京市" onclick="LocationHref('beijing',6,(116+28/60),(39+54/60));"/>
+        <input type="button" class="button" value="天津市" onclick="LocationHref('tianjin',6,(117+11/60),(39+9/60));"/>
+        <input type="button" class="button" value="上海市" onclick="LocationHref('shanghai',6,(121+29/60),(31+14/60));"/>
+        <input type="button" class="button" value="重庆市" onclick="LocationHref('chongqing',6,(106+32/60),(29+32/60));"/>
+    </div>
+
+
+    <!-- 5个自治区 -->
+    <div>
+        <input type="button" class="button" value="西藏" onclick="LocationHref('xizang',6,(90+8/60),(29+39/60));"/>
+        <input type="button" class="button" value="新疆" onclick="LocationHref('xinjiang',6,(87+36/60),(43+48/60));"/>
+        <input type="button" class="button" value="内蒙古" onclick="LocationHref('neimenggu',6,(111+48/60),(40+49/60));"/>
+        <input type="button" class="button" value="宁夏" onclick="LocationHref('ningxia',6,(106+16/60),(38+20/60));"/>
+        <input type="button" class="button" value="广西" onclick="LocationHref('guangxi',6,(119+18/60),(26+5/60));"/>
+    </div>
+
+
+    <!-- 2个特别行政区 -->
+    <div>
+        <input type="button" class="button" value="香港" onclick="LocationHref('xianggang',6,(114+10/60),(22+18/60));"/>
+        <input type="button" class="button" value="澳门" onclick="LocationHref('aomen',6,(113+35/60),(22+14/60));"/>
+
+    </div>
+        <input type="button" class="button" value="总数："/>
+        <input type="button" class="button" value="" id="dataCount" name="dataCount" />
+</div>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+
+    var province = getQueryVariable('province');
+    //初始化设置地图
+    if(getQueryVariable('province') != false){
+
+        var map = new AMap.Map("container", {
+            resizeEnable: true,
+            center: [parseFloat(getQueryVariable('nowLng')), parseFloat(getQueryVariable('nowLat'))],//当前位置
+            zoom: parseInt(getQueryVariable('zoom'))//初始化缩放级别 [0,20]
+        });
+    }else{
+        var map = new AMap.Map("container", {
+            resizeEnable: true,
+            center: [116+3/60, 39+9/60],//当前位置:北京 北纬39.9”，东经116. 3”。
+            zoom: 4//初始化缩放级别 [0,20]
+        });
+    }
+
+
+    if (!isSupportCanvas()) {
+        alert('热力图仅对支持canvas的浏览器适用,您所使用的浏览器不能使用热力图功能,请换个浏览器试试~')
+    }
+
+
+
+    //创建热力点数据（上线请设置为实际业务数据）
+    var points = [];
+    var max = 0;
+    var len = 2000;
+    var dataCount = 0;
+    while (len--) {
+        max++;
+        var point = {
+            lng: Math.floor(Math.random()*135.0308),//经度135
+            lat: Math.floor(Math.random()*53.55),//纬度53
+            count: max
+        };
+
+
+        var lngVal = parseFloat(point.lng);
+        var latVal = parseFloat(point.lat);
+        var province = getQueryVariable('province');
+        // var lngW = parseFloat(getQueryVariable('lngW'));
+        // var lngE = parseFloat(getQueryVariable('lngE'));
+        // var latN = parseFloat(getQueryVariable('latN'));
+        // var latS = parseFloat(getQueryVariable('latS'));
+        //23个省
+
+        if(province == 'hunan'){//只显示湖南热力点
+            if(lngVal<(108+47/60) || lngVal>(114+15/60) || latVal<(24+38/60) || latVal>(30+8/60)){
+                continue;
+            }
+
+        }else if(province == 'taiwang'){//台湾
+            if(parseInt(point.lng)<(119+18/60+3/3600) || parseInt(point.lng)>(124+34/60+30/3600) || parseInt(point.lat)<(20+45/60+25/3600) || parseInt(point.lat)>(25+56/60+30/3600)){
+                continue;
+            }
+
+        }else if(province == 'hainan'){//海南
+            if(parseInt(point.lng)<(108+37/60) || parseInt(point.lng)>(111+5/60) || parseInt(point.lat)<(18+10/60) || parseInt(point.lat)>(20+10/60)){
+                continue;
+            }
+
+        }else if(province == 'yunnan'){//云南
+            if(parseInt(point.lng)<97.5167 || parseInt(point.lng)>106.1833 || parseInt(point.lat)<21.1333 || parseInt(point.lat)>29.25){
+                continue;
+            }
+
+        }else if(province == 'guangdong'){//广东
+            if(parseInt(point.lng)<(109+45/60) || parseInt(point.lng)>(117+20/60) || parseInt(point.lat)<(20+12/60) || parseInt(point.lat)>(25+31/60)){
+                continue;
+            }
+
+        }else if(province == 'fujiang'){//福建
+            if(parseInt(point.lng)<(115+50/60) || parseInt(point.lng)>(120+45/60) || parseInt(point.lat)<(23+30/60) || parseInt(point.lat)>(28+22/60)){
+                continue;
+            }
+
+        }else if(province == 'guizhou'){//贵州
+            if(parseInt(point.lng)<(103+36/60) || parseInt(point.lng)>(109+35/60) || parseInt(point.lat)<(24+37/60) || parseInt(point.lat)>(29+13/60)){
+                continue;
+            }
+
+        }else if(province == 'jiangxi'){//江西
+            if(parseInt(point.lng)<(113+34/60) || parseInt(point.lng)>(118+28/60) || parseInt(point.lat)<(24+29/60) || parseInt(point.lat)>(30+4/60)){
+                continue;
+            }
+
+        }else if(province == 'zhejiang'){//浙江
+            if(parseInt(point.lng)<118 || parseInt(point.lng)>123 || parseInt(point.lat)<(27+12/60) || parseInt(point.lat)>(31+31/60)){
+                continue;
+            }
+
+        }else if(province == 'sichuan'){//四川
+            if(parseInt(point.lng)<(97+21/60) || parseInt(point.lng)>(108+31/60) || parseInt(point.lat)<(26+3/60) || parseInt(point.lat)>(34+19/60)){
+                continue;
+            }
+
+        }else if(province == 'hubei'){//湖北
+            if(parseInt(point.lng)<(108+21/60)|| parseInt(point.lng)>(116+7/60) || parseInt(point.lat)<(29+5/60) || parseInt(point.lat)>(33+20/60)){
+                continue;
+            }
+
+        }else if(province == 'anhui'){//安徽
+            if(parseInt(point.lng)<(114+54/60)|| parseInt(point.lng)>(119+37/60)     || parseInt(point.lat)<(29+41/60) || parseInt(point.lat)>(34+38/60)){
+                continue;
+            }
+
+        }else if(province == 'jiangsu'){//江苏
+            if(parseInt(point.lng)<(116+18/60)|| parseInt(point.lng)>(121+57/60) || parseInt(point.lat)<(30+45/60) || parseInt(point.lat)>(35+20/60)){
+                continue;
+            }
+
+        }else if(province == 'qinghai'){//青海
+            if(parseInt(point.lng)<89.4161 || parseInt(point.lng)>103.0702     || parseInt(point.lat)<31.4161 || parseInt(point.lat)>39.0703 ){
+                continue;
+            }
+
+        }else if(province == 'gansu'){//甘肃
+            if(parseInt(point.lng)<(92+13/60)|| parseInt(point.lng)>(108+46/60) || parseInt(point.lat)<(32+11/60) || parseInt(point.lat)>(42+57/60)){
+                continue;
+            }
+
+        }else if(province == 'Qin'){//陕西
+            if(parseInt(point.lng)<(105+29/60)|| parseInt(point.lng)>(111+15/60) || parseInt(point.lat)<(31+42/60) || parseInt(point.lat)>(39+35/60)){
+                continue;
+            }
+
+        }else if(province == 'Jin'){//山西
+            if(parseInt(point.lng)<(110+14/60)|| parseInt(point.lng)>(114+33/60)     || parseInt(point.lat)<(34+34/60) || parseInt(point.lat)>(40+43/60)){
+                continue;
+            }
+
+        }else if(province == 'henan'){//河南
+            if(parseInt(point.lng)<(110+21/60)|| parseInt(point.lng)>(116+39/60) || parseInt(point.lat)<(31+23/60) || parseInt(point.lat)>(36+22/60)){
+                continue;
+            }
+
+        }else if(province == 'hebei'){//河北
+            if(parseInt(point.lng)<(113+4/60) || parseInt(point.lng)>(119+53/60)     || parseInt(point.lat)<(36+1/60) || parseInt(point.lat)>(42+37/60) ){
+                continue;
+            }
+
+        }else if(province == 'shandong'){//山东
+            if(parseInt(point.lng)<(114+19/60)|| parseInt(point.lng)>(122+43/60) || parseInt(point.lat)<(34+22/60) || parseInt(point.lat)>(38+23/60)){
+                continue;
+            }
+
+        }else if(province == 'liaoning'){//辽宁
+            if(parseInt(point.lng)<(118+53/60)|| parseInt(point.lng)>(125+46/60) || parseInt(point.lat)<(38+43/60) || parseInt(point.lat)>(43+26/60)){
+                continue;
+            }
+
+        }else if(province == 'jilin'){//吉林
+            if(parseInt(point.lng)<(121+38/60) || parseInt(point.lng)>(131+19/60)     || parseInt(point.lat)<(40+52/60) || parseInt(point.lat)>(46+18/60) ){
+                continue;
+            }
+
+        }else if(province == 'heilongjiang'){//黑龙江
+            if(parseInt(point.lng)<(121+11/60)|| parseInt(point.lng)>(135+5/60) || parseInt(point.lat)<(43+25/60) || parseInt(point.lat)>(53+33/60)){
+                continue;
+            }
+
+        //4个直辖市
+
+        }else if(province == 'beijing'){//北京
+            if(parseInt(point.lng)<(115+25/60) || parseInt(point.lng)>(117+30/60) || parseInt(point.lat)<(39+26/60) || parseInt(point.lat)>(41+3/60)){
+                continue;
+            }
+
+        }else if(province == 'tianjin'){//天津
+            if(parseInt(point.lng)<(116+43/60) || parseInt(point.lng)>(118+194/60) || parseInt(point.lat)<(38+34/60) || parseInt(point.lat)>(40+15/60)){
+                continue;
+            }
+
+        }else if(province == 'shanghai'){//上海
+            if(parseInt(point.lng)<(120+51/60) || parseInt(point.lng)>(122+12/60) || parseInt(point.lat)<(30+40/60) || parseInt(point.lat)>(31+53/60)){
+                continue;
+            }
+        }else if(province == 'chongqing'){//重庆
+            if(parseInt(point.lng)<(105+17/60) || parseInt(point.lng)>(110+11/60) || parseInt(point.lat)<(28+10/60) || parseInt(point.lat)>(32+13/60)){
+                continue;
+            }
+
+
+        //2个特别行政区
+
+        }else if(province == 'xianggang'){//香港
+            if(parseInt(point.lng)<(113+52/60) || parseInt(point.lng)>(114+30/60) || parseInt(point.lat)<(22+9/60) || parseInt(point.lat)>(22+37/60)){
+                continue;
+            }
+
+        }else if(province == 'aomen'){//澳门
+            if(parseInt(point.lng)<(113+33/60) || parseInt(point.lng)>(113+38/60) || parseInt(point.lat)<(113+20/60) || parseInt(point.lat)>(113+25/60)){
+                continue;
+            }
+
+
+        //5个自治区
+
+        }else if(province == 'xizang'){//西藏
+            if(parseInt(point.lng)<78.4167 || parseInt(point.lng)>99.1 || parseInt(point.lat)<26.7333 || parseInt(point.lat)>36.5333){
+                continue;
+            }
+
+        }else if(province == 'xinjiang'){//新疆
+            if(parseInt(point.lng)<(73+40/60) || parseInt(point.lng)>(96+23/60) || parseInt(point.lat)<(34+22/60) || parseInt(point.lat)>(49+10/60) ){
+                continue;
+            }
+
+        }else if(province == 'neimenggu'){//内蒙古
+            if(parseInt(point.lng)<(97+12/60) || parseInt(point.lng)>(126+4/60) || parseInt(point.lat)<(37+24/60) || parseInt(point.lat)>(53+23/60)){
+                continue;
+            }
+
+        }else if(province == 'ningxia'){//宁夏
+            if(parseInt(point.lng)<(104+17/60) || parseInt(point.lng)>(107+39/60) || parseInt(point.lat)<(35+14/60) || parseInt(point.lat)>(39+23/60)){
+                continue;
+            }
+
+        }else if(province == 'guangxi'){//广西
+            if(parseInt(point.lng)<(104+29/60) || parseInt(point.lng)>(112+04/60) || parseInt(point.lat)<(20+54/60) || parseInt(point.lat)>(26+23/60)){
+                continue;
+            }
+
+
+        //全国
+        }else{//中国
+            if( parseInt(point.lng)<(73+40/60) || parseInt(point.lat)<(3+52/60)){//去掉东经75和北纬3度以下的热力点
+                continue;
+            }
+        }
+        dataCount += parseInt(max);
+        points.push(point);
+    }
+    document.getElementById('dataCount').value = dataCount;
+
+    var heatmap;
+    //创建heatmap对象实例（设置热力点样式，如大小，透明度等）
+    //详细的参数,可以查看heatmap.js的文档 http://www.patrick-wied.at/static/heatmapjs/docs.html
+    map.plugin(["AMap.Heatmap"], function() {
+        //初始化heatmap对象
+        heatmap = new AMap.Heatmap(map, {
+            //visible:true,         //visible 热力图是否显示,默认为true
+            //backgroundColor:rgba(0,102,256,0.2),          //画板的背景颜色设置，支持rgb(a)，颜色名称，但必须要用引号
+            radius: 25,          //热力图的每个点的半径大小   [0,+∞)
+            opacity: [0, 0.8],          //热力图的透明度,分别对应heatmap.js的minOpacity和maxOpacity
+            gradient:{          //热力图的颜色渐变区间。   {JSON}:key 插值的位置, 0-1;  value颜色值 
+                0.5: 'blue',
+                0.65: 'rgb(117,211,248)',
+                0.7: 'rgb(0, 255, 0)',
+                0.9: '#ffea00',
+                1.0: 'red'
+            }
+        });
+
+        //设置数据集(把热力图数据放到地图上)
+        heatmap.setDataSet({
+            data: points,
+            max: max
+        });
+
+    })
+
+
+
+
+    console.log('数据:');
+    console.log(points);
+    console.log('省名：'+getQueryVariable('province'));
+    console.log('总数:'+dataCount);
+
+
+
+
+    //判断浏览区是否支持canvas
+    function isSupportCanvas() {
+        var elem = document.createElement('canvas');
+        return !!(elem.getContext && elem.getContext('2d'));
+    }
+
+
+    /*
+    * 获取当前url指定的参数
+    * @param {String} url参数的键名
+    * @return {String} url参数的键名对应的键值
+    */
+    function getQueryVariable(variable){
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+
+    /*
+    * 获取指定省的热力图
+    *
+    * @param 
+    * province {String} 省名|直辖市名|自治区名|特别行政区名
+    * lngW {String} 东边界经度 
+    * lngE {String} 西边界经度 
+    * latN {String} 北边界维度 
+    * latS {String} 南边界维度 
+    *
+    * @return continue
+    */
+    function LocationHref(province,zoom,nowLng,nowLat){
+        var data = 'province='+province+'&zoom='+zoom+'&nowLng='+nowLng+'&nowLat='+nowLat;
+        window.location.href='./map.html?'+data;
+
+    }
+
+</script>
+
+</body>
+</html>
+
+<script>
+// function submitForm(url, data)
+// {
+// 　　var eleForm = document.body.appendChild(document.createElement('form'));
+// 　　eleForm.action = url;
+// 　　for (var property in data)
+// 　　{
+// 　　　　var hiddenInput = document.createElement('input');
+// 　　　　hiddenInput.type = 'hidden';
+// 　　　　hiddenInput.name = property;
+// 　　　　hiddenInput.value = data[property];
+// 　　　　eleForm.appendChild(hiddenInput);
+// 　　}
+// 　　this.eleForm = eleForm;
+// 　　if (!submitForm._initialized)
+// 　　{
+// 　　　　submitForm.prototype.post = function ()
+// 　　　  {
+// 　　　　　　this.eleForm.method = 'post';
+// 　　　　　　this.eleForm.submit();
+// 　　　　};
+// 　　submitForm._initialized = true;
+// 　　}
+// }
+// console.log(submitForm(window.location.href))
+
+// function Onclick()
+// {
+// 　　//location.href = "/Activity/ActivityInformation?a_id=" + "1"; // Url中会带有参数
+// 　　new submitForm('/Activity/ActivityInformation', { a_id: "1" }).post(); // Url中的参数被隐藏
+// }
+</script>
